@@ -1,18 +1,21 @@
 package bspkrs.client.util;
 
+import java.awt.Color;
+
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.opengl.GL11;
 
 public final class HUDUtils
 {
@@ -169,12 +172,12 @@ public final class HUDUtils
         float var7 = 0.00390625F;
         float var8 = 0.00390625F;
         Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldRenderer = tessellator.getWorldRenderer();
-        worldRenderer.startDrawingQuads();
-        worldRenderer.addVertexWithUV((x + 0), (y + height), zLevel, ((u + 0) * var7), ((v + height) * var8));
-        worldRenderer.addVertexWithUV((x + width), (y + height), zLevel, ((u + width) * var7), ((v + height) * var8));
-        worldRenderer.addVertexWithUV((x + width), (y + 0), zLevel, ((u + width) * var7), ((v + 0) * var8));
-        worldRenderer.addVertexWithUV((x + 0), (y + 0), zLevel, ((u + 0) * var7), ((v + 0) * var8));
+        VertexBuffer buffer = tessellator.getBuffer();
+        buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        buffer.pos((x + 0), (y + height), zLevel).tex(((u + 0) * var7), ((v + height) * var8));
+        buffer.pos((x + width), (y + height), zLevel).tex(((u + width) * var7), ((v + height) * var8));
+        buffer.pos((x + width), (y + 0), zLevel).tex(((u + width) * var7), ((v + 0) * var8));
+        buffer.pos((x + 0), (y + 0), zLevel).tex(((u + 0) * var7), ((v + 0) * var8));
         tessellator.draw();
     }
 
@@ -244,13 +247,16 @@ public final class HUDUtils
      */
     public static void renderQuad(Tessellator tessellator, int x, int y, int width, int height, int color)
     {
-        WorldRenderer worldRenderer = tessellator.getWorldRenderer();
-        worldRenderer.startDrawingQuads();
-        worldRenderer.setColorOpaque_I(color);
-        worldRenderer.addVertex((x + 0), (y + 0), 0.0D);
-        worldRenderer.addVertex((x + 0), (y + height), 0.0D);
-        worldRenderer.addVertex((x + width), (y + height), 0.0D);
-        worldRenderer.addVertex((x + width), (y + 0), 0.0D);
+    	VertexBuffer buffer = tessellator.getBuffer();
+    	buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+    	int red = (color >> 16) & 0xFF;
+    	int green = (color >> 8) & 0xFF;
+    	int blue = (color >> 0) & 0xFF;
+    	int alpha = (color >> 24) & 0xff;
+        buffer.pos((x + 0), (y + 0), 0.0D).color(red, green, blue, alpha);
+        buffer.pos((x + 0), (y + height), 0.0D).color(red, green, blue, alpha);
+        buffer.pos((x + width), (y + height), 0.0D).color(red, green, blue, alpha);
+        buffer.pos((x + width), (y + 0), 0.0D).color(red, green, blue, alpha);
         tessellator.draw();
     }
 

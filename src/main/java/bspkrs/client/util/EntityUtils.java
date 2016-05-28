@@ -8,6 +8,10 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
 
+import com.mojang.authlib.GameProfile;
+
+import bspkrs.bspkrscore.fml.bspkrsCoreMod;
+import bspkrs.util.BSLog;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.model.ModelBase;
@@ -15,15 +19,11 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.World;
-import bspkrs.bspkrscore.fml.bspkrsCoreMod;
-import bspkrs.util.BSLog;
-
-import com.mojang.authlib.GameProfile;
 
 public class EntityUtils
 {
@@ -50,7 +50,7 @@ public class EntityUtils
 	 * reflected while rendering, and the model itself is rotated 180
 	 * <hipsterpig> for the villager zombie, when it's being rendered it doesn't
 	 * set the mainModel as the villager zombie's model, so if you pull the
-	 * mainModel out of the RendererLivingEntity and try to render that to get
+	 * mainModel out of the RenderLivingEntity and try to render that to get
 	 * the compiled ModelRenderers, it'll turn up with nothing <hipsterpig> if
 	 * you ask why i do that compile check, horse models. <hipsterpig> horse
 	 * models have horse, donkey, mule, armor, chest, all in one model, and in
@@ -72,13 +72,12 @@ public class EntityUtils
 	 * you're asking)
 	 */
 	// @formatter:on
-    @SuppressWarnings("unused")
     public static float getModelSize(EntityLivingBase ent)
     {
         Render render = Minecraft.getMinecraft().getRenderManager().getEntityRenderObject(ent);
-        if (render instanceof RendererLivingEntity)
+        if (render instanceof RenderLivingBase)
         {
-            RendererLivingEntity entRender = (RendererLivingEntity) render;
+            RenderLivingBase entRender = (RenderLivingBase) render;
             ModelBase mainModel;
             ModelBase renderPassModel;
             try
@@ -180,7 +179,7 @@ public class EntityUtils
             RenderManager rendermanager = Minecraft.getMinecraft().getRenderManager();
             rendermanager.setPlayerViewY(180.0F);
             rendermanager.setRenderShadow(false);
-            rendermanager.renderEntityWithPosYaw(ent, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
+            rendermanager.doRenderEntity(ent, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, true);
             rendermanager.setRenderShadow(true);
         }
         finally

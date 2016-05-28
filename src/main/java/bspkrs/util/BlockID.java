@@ -2,7 +2,8 @@ package bspkrs.util;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameData;
 
@@ -59,7 +60,7 @@ public class BlockID
 
     public Block getBlock()
     {
-        return GameData.getBlockRegistry().getObject(id);
+        return GameData.getBlockRegistry().getObject(new ResourceLocation(id));
     }
 
     public static BlockID parse(String format)

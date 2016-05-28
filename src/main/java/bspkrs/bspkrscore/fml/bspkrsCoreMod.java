@@ -143,12 +143,13 @@ public class bspkrsCoreMod
     {
         if (!isCommandRegistered)
             event.registerServerCommand(new CommandBS());
+        CommonUtils.setServer(event.getServer());
     }
 
     @SubscribeEvent
     public void onConfigChanged(OnConfigChangedEvent event)
     {
-        if (event.modID.equals(Reference.MODID))
+        if (event.getModID().equals(Reference.MODID))
         {
             Reference.config.save();
             syncConfig();

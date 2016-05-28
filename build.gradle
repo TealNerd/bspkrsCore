@@ -66,20 +66,3 @@ processResources {
 jar {
     appendix = config.appendix
 }
-
-// add a source jar
-task sourceJar(type: Jar) {
-    from sourceSets.main.allSource
-    appendix = 'src'
-}
-
-// because the normal output has been made to be obfuscated
-task deobfJar(type: Jar) {
-    from sourceSets.main.output
-    appendix = 'deobf'
-}
-
-artifacts {
-    archives sourceJar
-    archives deobfJar
-}

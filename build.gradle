@@ -16,6 +16,7 @@ buildscript {
 }
 
 apply plugin: "net.minecraftforge.gradle.forge"
+apply plugin: "maven"
 
 compileJava.options.encoding = 'UTF-8'
 

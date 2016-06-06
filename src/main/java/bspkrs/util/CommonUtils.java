@@ -31,6 +31,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.client.FMLClientHandler;
 
 /*
  * @Authors: DaftPVF, bspkrs
@@ -536,15 +537,12 @@ public final class CommonUtils
     {
         try
         {
-            return Minecraft.getMinecraft().mcDataDir.getAbsolutePath();
+            return FMLClientHandler.instance().getClient().mcDataDir.getAbsolutePath();
         }
         catch (NoClassDefFoundError e)
         {	
             return minecraftserver.getFile("").getAbsolutePath();
         }
-		catch (NoSuchMethodError e) {
-			return minecraftserver.getFile("").getAbsolutePath();
-		}
     }
 
     public static String getConfigDir()

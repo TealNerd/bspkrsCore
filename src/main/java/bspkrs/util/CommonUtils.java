@@ -542,6 +542,9 @@ public final class CommonUtils
         {	
             return minecraftserver.getFile("").getAbsolutePath();
         }
+		catch (NoSuchMethodError e) {
+			return minecraftserver.getFile("").getAbsolutePath();
+		}
     }
 
     public static String getConfigDir()
